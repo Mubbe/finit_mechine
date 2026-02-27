@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://btja5tw2vaoli"]
+
+[ext_resource type="Script" uid="uid://0t31ffit0rym" path="res://Enemy.cs" id="1_7k104"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4gyqm"]
+size = Vector3(100, 10, 100)
+
+[sub_resource type="TorusMesh" id="TorusMesh_qi2p4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iifgy"]
+
+[node name="Enemy" type="Node3D" unique_id=42970952]
+script = ExtResource("1_7k104")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1477874390]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1441904076]
+shape = SubResource("BoxShape3D_4gyqm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=887920188]
+mesh = SubResource("TorusMesh_qi2p4")
+
+[node name="Button" type="CSGMesh3D" parent="MeshInstance3D" unique_id=2034106754]
+transform = Transform3D(1, 0, 0, 0, 0.36, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_iifgy")
+
+[connection signal="body_entered" from="Area3D" to="." method="Body_Entered"]
+[connection signal="body_exited" from="Area3D" to="." method="Body_Exited"]
