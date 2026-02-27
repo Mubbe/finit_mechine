@@ -3,9 +3,14 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
-	[Export] Sprite3D health1;
-    [Export] Sprite3D health2;
-    [Export] Sprite3D health3;
+	[Export] Sprite3D Health;
+
+    public override void _Ready()
+    {
+       
+    }
+
+
     public const float Speed = 5.0f;
 	public const float JumpVelocity = 4.5f;
 

@@ -1,28 +1,30 @@
-[gd_scene format=3 uid="uid://btja5tw2vaoli"]
+[gd_scene load_steps=5 format=3 uid="uid://btja5tw2vaoli"]
 
 [ext_resource type="Script" uid="uid://0t31ffit0rym" path="res://Enemy.cs" id="1_7k104"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4gyqm"]
-size = Vector3(100, 10, 100)
+size = Vector3(2, 1, 2)
 
 [sub_resource type="TorusMesh" id="TorusMesh_qi2p4"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_iifgy"]
 
-[node name="Enemy" type="Node3D" unique_id=42970952]
+[node name="Enemy" type="Node3D" node_paths=PackedStringArray("Head")]
 script = ExtResource("1_7k104")
+Head = NodePath("Body")
 
-[node name="Area3D" type="Area3D" parent="." unique_id=1477874390]
+[node name="Area3D" type="Area3D" parent="."]
 collision_layer = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1441904076]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_4gyqm")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=887920188]
+[node name="Body" type="MeshInstance3D" parent="."]
 mesh = SubResource("TorusMesh_qi2p4")
 
-[node name="Button" type="CSGMesh3D" parent="MeshInstance3D" unique_id=2034106754]
+[node name="head" type="CSGMesh3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 0.36, 0, 0, 0, 1, 0, 0, 0)
+use_collision = true
 mesh = SubResource("CylinderMesh_iifgy")
 
 [connection signal="body_entered" from="Area3D" to="." method="Body_Entered"]

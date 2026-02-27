@@ -1,13 +1,14 @@
 using Godot;
 using System;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 
 public partial class Enemy : Node3D
 {
     [Export] public CharacterBody3D player;
-    
+    [Export] public CsgMesh3D Head;
 
-
+    bool now_chasing=false;
 
     // Called when the node enters the scene tree for the first time.
     enum Npcstate
@@ -20,7 +21,7 @@ public partial class Enemy : Node3D
     {
         
         
-            var area = GetNode<Area3D>("Area3D");
+           var area = GetNode<Area3D>("Area3D");
             area.BodyEntered += BodyEntered;
             area.BodyExited += BodyExited;
         
@@ -35,22 +36,42 @@ public partial class Enemy : Node3D
         {
             case Npcstate.idle:
                 {
+                    Vector3 targetPos = player.GlobalPosition;
+                    targetPos.Y = GlobalPosition.Y;
 
-                    
+
+
+                    float dis = (player.GlobalPosition - GlobalPosition).Length();
+                    if (dis <= 10f)
+                    {
+                        currentstate = Npcstate.chasing;
+                        GD.Print("Chasing player...");
+                    }
+
+
+
                     break;
                     
                 }
             case Npcstate.chasing:
                 {
+
                     // Move towards the player but keep the same Y position:
                     Vector3 targetPos = player.GlobalPosition;
                     targetPos.Y = GlobalPosition.Y;
 
-
                     Vector3 dir = (targetPos - GlobalPosition).Normalized();
-                    float speed = 2f; 
+                    float speed = 2f;
                     GlobalTranslate(dir * speed * (float)delta);
-                    GD.Print("Chasing player...");
+
+
+                    float dis = (player.GlobalPosition - GlobalPosition).Length();
+                    if (dis >= 10f)
+                    {
+                        currentstate= Npcstate.idle;
+                        GD.Print("idle player...");
+                    }
+                    
                     
                     break;
                 }
@@ -77,6 +98,8 @@ public partial class Enemy : Node3D
             currentstate = Npcstate.idle;
         }
     }
+
+   
 
 
 }
